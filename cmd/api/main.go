@@ -23,12 +23,14 @@ func main() {
 	// Read from command line arguments
 
 	// Connect to database
-	http.HandleFunc("/", Hello)
-	http.HandleFunc("/about", About)
+
+	// http.HandleFunc("/", Hello)
+	// http.HandleFunc("/about", About)
+
 	// Start the server
 	fmt.Println("Starting server on ", app.Domain)
 	log.Printf("Starting server on port %d", port)
-	err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+	err := http.ListenAndServe(fmt.Sprintf(":%d", port), app.routes())
 	if err != nil {
 		log.Fatal(err)
 	}
