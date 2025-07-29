@@ -23,7 +23,8 @@ func main() {
 	// Read from command line arguments
 
 	// Connect to database
-
+	http.HandleFunc("/", Hello)
+	http.HandleFunc("/about", About)
 	// Start the server
 	fmt.Println("Starting server on ", app.Domain)
 	log.Printf("Starting server on port %d", port)
