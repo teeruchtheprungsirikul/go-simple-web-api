@@ -16,7 +16,7 @@ func (app *application) routes() http.Handler {
 	mux.Use(middleware.Recoverer)
 
 	// register routes
-	mux.Get("/", app.Hello)
+	mux.Get("/", app.Home)
 	mux.Get("/about", app.About)
 
 	return mux
