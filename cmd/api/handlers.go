@@ -41,7 +41,7 @@ func (app *application) About(w http.ResponseWriter, r *http.Request) {
 // ฟังก์ชันสำหรับแสดงรายชื่อหนังทั้งหมดโดยการทดสอบ mock data
 func (app *application) AllDemoMovies(w http.ResponseWriter, r *http.Request) {
 
-	// สร้างตัวแปรไว้เก็บข้อมูลฟนัง
+	// สร้างตัวแปรไว้เก็บข้อมูลหนัง
 	var movies []models.Movie
 
 	// กำหนดตัวแปรรูปแบบวันที่ yyyy-mm-dd
