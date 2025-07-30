@@ -14,6 +14,7 @@ func (app *application) routes() http.Handler {
 
 	// Add middleware
 	mux.Use(middleware.Recoverer)
+	mux.Use(app.enableCORS)
 
 	// register routes
 	mux.Get("/", app.Home)
