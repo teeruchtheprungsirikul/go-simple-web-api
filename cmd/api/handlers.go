@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 )
@@ -120,17 +119,22 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	// validate user against database (ตรวจสอบข้อมูลผู้ใช้จากฐานข้อมูล)
 	user, err := app.DB.GetUserByEmail(requestPayload.Email)
 	if err != nil {
-		app.errorJSON(w, errors.New("Invalid credentials"), http.StatusBadRequest)
+		app.errorJSON(w, errors.New("invalid credentials"), http.StatusBadRequest)
 		return
 	}
 
 	// check password against hash (ตรวจสอบรหัสผ่าน)
+	valid, err := user.PasswordMatches(requestPayload.Password)
+	if err != nil || !valid {
+		app.errorJSON(w, errors.New("invalid credentials"), http.StatusBadRequest)
+		return
+	}
 
 	// create a jwt user (สร้าง jwt user)
 	u := jwtUser{
-		ID:        1,
-		FirstName: "John",
-		LastName:  "Doe",
+		ID:        user.ID,
+		FirstName: user.FirstName,
+		LastName:  user.LastName,
 	}
 
 	// generate tokens (สร้างโทเคน)
@@ -140,8 +144,9 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	log.Println(tokens.Token)
+	refreshCookie := app.auth.GetRefreshCookie(tokens.RefreshToken)
+	http.SetCookie(w, refreshCookie)
 
-	w.Write([]byte(tokens.Token))
+	app.writeJSON(w, http.StatusAccepted, tokens)
 
 }
