@@ -30,6 +30,10 @@ func (app *application) routes() http.Handler {
 	mux.Get("/movies/{id}", app.GetMovie)
 
 	mux.Route("/admin", func(mux chi.Router) {
+
+		// Protected routes
+		mux.Use(app.authRequired)
+
 		mux.Get("/movies/{id}", app.MovieForEdit)
 	})
 
