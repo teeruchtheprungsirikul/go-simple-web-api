@@ -3,6 +3,7 @@ package main
 import (
 	"backend/internal/models"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"log"
 	"net/http"
@@ -117,6 +118,11 @@ func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate user against database (ตรวจสอบข้อมูลผู้ใช้จากฐานข้อมูล)
+	user, err := app.DB.GetUserByEmail(requestPayload.Email)
+	if err != nil {
+		app.errorJSON(w, errors.New("Invalid credentials"), http.StatusBadRequest)
+		return
+	}
 
 	// check password against hash (ตรวจสอบรหัสผ่าน)
 
