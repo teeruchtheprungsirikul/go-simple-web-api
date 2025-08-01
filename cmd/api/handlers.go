@@ -105,6 +105,16 @@ func (app *application) AllMovies(w http.ResponseWriter, r *http.Request) {
 func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
 
 	// read json payload (อ่านข้อมูล JSON ที่ส่งมา)
+	var requestPayload struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+
+	err := app.readJSON(w, r, &requestPayload)
+	if err != nil {
+		app.errorJSON(w, err, http.StatusBadRequest)
+		return
+	}
 
 	// validate user against database (ตรวจสอบข้อมูลผู้ใช้จากฐานข้อมูล)
 
