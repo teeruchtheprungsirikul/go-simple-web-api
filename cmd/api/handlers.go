@@ -4,6 +4,7 @@ import (
 	"backend/internal/models"
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 )
@@ -98,4 +99,33 @@ func (app *application) AllMovies(w http.ResponseWriter, r *http.Request) {
 	}
 
 	_ = app.writeJSON(w, http.StatusOK, movies)
+}
+
+// ฟังก์ชันสำหรับ Authentication และสร้าง TokenPairs
+func (app *application) authenticate(w http.ResponseWriter, r *http.Request) {
+
+	// read json payload (อ่านข้อมูล JSON ที่ส่งมา)
+
+	// validate user against database (ตรวจสอบข้อมูลผู้ใช้จากฐานข้อมูล)
+
+	// check password against hash (ตรวจสอบรหัสผ่าน)
+
+	// create a jwt user (สร้าง jwt user)
+	u := jwtUser{
+		ID:        1,
+		FirstName: "John",
+		LastName:  "Doe",
+	}
+
+	// generate tokens (สร้างโทเคน)
+	tokens, err := app.auth.GenerateTokenPair(&u)
+	if err != nil {
+		app.errorJSON(w, err)
+		return
+	}
+
+	log.Println(tokens.Token)
+
+	w.Write([]byte(tokens.Token))
+
 }
