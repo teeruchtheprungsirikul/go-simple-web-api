@@ -38,8 +38,8 @@ func (app *application) routes() http.Handler {
 		mux.Get("/movies", app.MovieCatalog)
 		mux.Get("/movies/{id}", app.MovieForEdit)
 		mux.Post("/movies", app.InsertMovie)
-		mux.Put("/movies{id}", app.UpdateMovie)
-		mux.Delete("/movies{id}", app.DeleteMovie)
+		mux.Put("/movies/{id}", app.UpdateMovie)
+		mux.Delete("/movies/{id}", app.DeleteMovie)
 	})
 
 	return mux
